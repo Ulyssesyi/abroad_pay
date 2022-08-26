@@ -1,8 +1,8 @@
 <?php
 
-namespace Yijin\Pay\Payment;
+namespace Yijin\AbroadPay\Payment;
 
-use \Yijin\Pay\Config;
+use \Yijin\AbroadPay\Config;
 
 abstract class Base
 {

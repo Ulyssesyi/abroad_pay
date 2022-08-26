@@ -1,6 +1,6 @@
 <?php
 
-namespace Yijin\Pay;
+namespace Yijin\AbroadPay;
 
 trait Response
 {

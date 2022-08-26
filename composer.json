@@ -4,7 +4,14 @@
     "type": "library",
     "require": {
         "php": ">=7.2",
-        "guzzlehttp/guzzle": "^7.0"
+        "ext-json": "*",
+        "guzzlehttp/guzzle": "^7.0",
+        "vlucas/phpdotenv": "^5.3",
+        "ext-curl": "*"
+    },
+    "require-dev": {
+        "phpstan/phpstan": "^0.12",
+        "phpunit/phpunit": "^9.5"
     },
     "autoload": {
         "psr-4": {
@@ -16,5 +23,12 @@
             "name": "yijin",
             "email": "yijin@laiqian.com"
         }
-    ]
+    ],
+    "scripts": {
+        "test": "phpunit --prepend tests/bootstrap.php -c phpunit.xml --colors=always",
+        "phpstan": "phpstan analyse --memory-limit 600M -l 0 -c phpstan.neon ./src ./tests"
+    },
+    "minimum-stability":"dev",
+    "prefer-stable": true,
+    "license":"Apache-2.0"
 }
