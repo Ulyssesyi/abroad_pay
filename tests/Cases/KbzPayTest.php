@@ -11,7 +11,7 @@ class KbzPayTest extends TestCase
     private $tradeNo;
     protected function setUp(): void
     {
-        $this->tradeNo = 'TS-' . time();
+        $this->tradeNo = 'TS' . time();
     }
 
     public function testQrcodePaySuccess()
@@ -21,6 +21,7 @@ class KbzPayTest extends TestCase
         $config->tradeNo = $this->tradeNo;
         $config->totalAmount = 0.01;
         $config->subject = '起飞';
+        $config->notifyUrl = 'https://www.baidu.com';
 
         $config->kbzAppId = getenv('KBZ_APPID');
         $config->kbzMerchantCode = getenv('KBZ_MCH_ID');
@@ -29,7 +30,7 @@ class KbzPayTest extends TestCase
         $payModel = (new Factory())->getAdapter($config);
         $res = $payModel->qrcodePay();
         $this->assertTrue($res['result'], 'B扫C失败' . json_encode($res,  JSON_UNESCAPED_UNICODE));
-        $this->assertSame(Config::PAY_SUCCESS, $res['data']['trade_status'] ?? 0, 'B扫C预期成功未实现'. json_encode($res, JSON_UNESCAPED_UNICODE));
+        $this->assertArrayHasKey('payUrl', $res['data'], 'C扫B失败' . json_encode($res,  JSON_UNESCAPED_UNICODE));
     }
 
     public function testQrcodePayFailed()

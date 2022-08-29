@@ -22,7 +22,8 @@ class KbzPay extends Base
     // 退款查询接口
     const REFUND_QUERY_URL = 'queryrefund';
     // 接口域名
-    const DOMAIN = 'https://api.kbzpay.com/payment/gateway/';
+    const DOMAIN = 'http://api.kbzpay.com/payment/gateway/uat/';
+//    const DOMAIN = 'https://api.kbzpay.com/payment/gateway/';
 
     use Response;
     public function __construct(Config $config)
@@ -260,6 +261,7 @@ class KbzPay extends Base
             "biz_content" => array_merge($params, $this->config->optional),
         ];
         $commonParams['sign'] = $this->sign($commonParams);
+        echo json_encode($commonParams);
 
         $client = new Client([
             'base_uri' => self::DOMAIN,
