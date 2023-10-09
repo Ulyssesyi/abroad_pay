@@ -187,7 +187,33 @@ class HiPay extends Base
      */
     function refund()
     {
-        // TODO: Implement refund() method.
+        $params = [
+            'merch_order_id' => $this->config->tradeNo,
+            'refund_req_no' => $this->config->refundTradeNo,
+            'amount' => $this->config->totalAmount,
+            'currency' => 'MMK',
+        ];
+        try {
+            $res = $this->execRequest($params, self::REFUND_URL);
+        } catch (GuzzleException $e) {
+            return $this->error($e->getMessage(), $e->getCode());
+        } catch (\Exception $e) {
+            return $this->error($e->getMessage(), $e->getCode());
+        }
+
+        if ($this->isSuccess($res)) {
+            $data = $res['biz_content'] ?? [];
+            if ($data['succeed']) {
+                $refund_status = Config::REFUND_SUCCESS;
+            } elseif (in_array($data['status'],  ['Initial', 'Wait_Process', 'Processing', 'Wait_Pay'])) {
+                $refund_status = Config::REFUNDING;
+            } else {
+                $refund_status = Config::REFUND_FAIL;
+            }
+            return $this->success(array_merge($data, compact('refund_status')));
+        } else {
+            return $this->error($res['error_msg'] ?? '系统异常', $res['error_code'] ?? -1);
+        }
     }
 
     /**
@@ -195,7 +221,31 @@ class HiPay extends Base
      */
     function refundQuery()
     {
-        // TODO: Implement refundQuery() method.
+        $params = [
+            'merch_order_id' => $this->config->tradeNo,
+            'refund_req_no' => $this->config->refundTradeNo,
+        ];
+        try {
+            $res = $this->execRequest($params, self::REFUND_QUERY_URL);
+        } catch (GuzzleException $e) {
+            return $this->error($e->getMessage(), $e->getCode());
+        } catch (\Exception $e) {
+            return $this->error($e->getMessage(), $e->getCode());
+        }
+
+        if ($this->isSuccess($res)) {
+            $data = $res['biz_content'] ?? [];
+            if ($data['succeed']) {
+                $refund_status = Config::REFUND_SUCCESS;
+            } elseif (in_array($data['status'],  ['Initial', 'Wait_Process', 'Processing', 'Wait_Pay'])) {
+                $refund_status = Config::REFUNDING;
+            } else {
+                $refund_status = Config::REFUND_FAIL;
+            }
+            return $this->success(array_merge($data, compact('refund_status')));
+        } else {
+            return $this->error($res['error_msg'] ?? '系统异常', $res['error_code'] ?? -1);
+        }
     }
 
     /**
@@ -203,7 +253,26 @@ class HiPay extends Base
      */
     function notify($data)
     {
-        // TODO: Implement notify() method.
+        list($headers, $body) = $data;
+        $sign = $headers['x-ft-sign'] ?? '';
+        $appid = $headers['x-ft-appid'] ?? '';
+        $timestamp = $headers['x-ft-timestamp'] ?? '';
+        $requestId = $headers['x-ft-requestid'] ?? '';
+
+        if (!$this->verifySign([$body, $sign, $timestamp, $requestId, $appid])) {
+            return $this->error('验签失败', -1);
+        }
+        $bodyData = json_decode($body, true);
+        $payData = $bodyData['data'] ?? [];
+        $event_type = $data['event_type'] ?? '';
+        if ($event_type === 'charge.success') {
+            $merchantTradeNo = $payData['merch_order_id'] ?? '';
+        } else if ($event_type === 'refund.success') {
+            $merchantTradeNo = $payData['refund_req_no'] ?? '';
+        } else {
+            return $this->error("回调错误", -1);
+        }
+        return $this->success(array_merge($data, compact('merchantTradeNo')));
     }
 
     /**
@@ -211,7 +280,7 @@ class HiPay extends Base
      */
     function notifySuccess()
     {
-        // TODO: Implement notifySuccess() method.
+        return 'success';
     }
 
     /**
@@ -233,7 +302,15 @@ class HiPay extends Base
      */
     function verifySign(array $data): bool
     {
-        // TODO: Implement verifySign() method.
+        list($content, $sign, $time, $requestId, $appid) = $data;
+        $str = implode('|', [$content, $appid, self::SING_TYPE, $requestId, $time]);
+        $publicKey = "-----BEGIN PUBLIC KEY-----\n" .
+            wordwrap($this->config->hiPayPublicKey, 64, "\n", true) .
+            "\n-----END PUBLIC KEY-----";
+        $key = openssl_get_publickey($publicKey);
+        $ok = openssl_verify($str, base64_decode($sign), $key,'sha256');
+        openssl_free_key($key);
+        return $ok;
     }
 
     /**
