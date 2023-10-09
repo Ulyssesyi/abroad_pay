@@ -9,12 +9,8 @@ use Yijin\AbroadPay\Response;
 
 class KbzPay extends Base
 {
-    // B扫C
-    const BARCODE_PAY_URL = 'order/reverseScan';
     // C扫B
     const QRCODE_PAY_URL = 'precreate';
-    // js网页支付URL
-    const JS_PAY_URL = 'order/jsapiScan';
     // 订单支付结果查询
     const ORDER_QUERY_URL = 'queryorder';
     // 退款接口
@@ -22,8 +18,8 @@ class KbzPay extends Base
     // 退款查询接口
     const REFUND_QUERY_URL = 'queryrefund';
     // 接口域名
-    const DOMAIN = 'http://api.kbzpay.com/payment/gateway/uat/';
-//    const DOMAIN = 'https://api.kbzpay.com/payment/gateway/';
+    const DOMAIN = 'https://api.kbzpay.com/payment/gateway/';
+    const DOMAIN_UAT = 'http://api.kbzpay.com/payment/gateway/uat/';
 
     use Response;
     public function __construct(Config $config)
@@ -36,7 +32,7 @@ class KbzPay extends Base
      */
     function barcodePay()
     {
-
+        return $this->error('暂不支持', -1);
     }
 
     /**
@@ -76,7 +72,7 @@ class KbzPay extends Base
      */
     function webPay()
     {
-
+        return $this->error('暂不支持', -1);
     }
 
     /**
@@ -261,10 +257,9 @@ class KbzPay extends Base
             "biz_content" => array_merge($params, $this->config->optional),
         ];
         $commonParams['sign'] = $this->sign($commonParams);
-        echo json_encode($commonParams);
 
         $client = new Client([
-            'base_uri' => self::DOMAIN,
+            'base_uri' => $this->config->isSandbox ? self::DOMAIN_UAT : self::DOMAIN,
         ]);
         $response = $client->post($url, [
             'json' => ['Request' => $commonParams],

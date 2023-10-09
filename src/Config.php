@@ -13,15 +13,25 @@ namespace Yijin\AbroadPay;
  * @property string $subject 订单标题
  * @property string $authCode B扫C时读取到的条码内容
  * @property string $notifyUrl 支付结果异步通知地址
+ * @property bool $isSandbox 是否UAT环境
  *
  * KBZPay参数
  * @property string $kbzAppId 商户的应用id
  * @property string $kbzMerchantCode 商户编码
  * @property string $kbzMerchantKey 商户密钥
+ *
+ * HiPay参数
+ * @property string $hipayAppId 商户的应用id
+ * @property string $hiPayPrivateKey 商户私钥
+ * @property string $hiPayPublicKey 应用公钥
  */
 class Config
 {
     const PAY_BY_KBZ = 1;
+    const PAY_BY_HIPAY = 2;
+    const PAY_BY_IPAY88 = 3;
+    const PAY_BY_GKASH = 4;
+    const PAY_BY_STRIPE = 5;
 
     const PAY_SUCCESS = 1;
     const PAYING = 0;

@@ -1,9 +1,13 @@
 # 介绍
 这个项目是适配公司多个不同海外支付渠道的支付组件，目前支持的支付渠道如下
 
-| 渠道      | 渠道编号 | 进度                               |
-|---------|------|----------------------------------|
-| KBZ Pay | 1    | （<font color=yellow>部分完成</font>） |
+| 渠道         | 渠道编号 | 进度                              |
+|------------|------|---------------------------------|
+| KBZ Pay    | 1    | （<font color=yellow>已废弃</font>） |
+| Hi Pay     | 2    | （<font color=red>开发中</font>）    |
+| IPay88 Pay | 3    | （<font color=red>开发中</font>）    |
+| Gkash Pay  | 4    | （<font color=red>开发中</font>）    |
+| Stripe Pay | 5    | （<font color=red>开发中</font>）    |
 
 # 更多
 可以通过继承Base类后实现更多的支付渠道
@@ -25,6 +29,7 @@
 | subject       | O    | string | FPX.Doinb                      | 订单标题                                                          |
 | authCode      | O    | string | 12331231321                    | B扫C时读取到的条码内容                                                  |
 | optional      | C    | array  | ['a'=>1]                       | 用于更多未添加的参数，当前只写了最小需求的参数，如果有更多需传给第三方的参数，可以通过该数组传入，具体参数请查阅第三方文档 |
+| isSandbox     | C    | bool   | false                          | 是否使用了UAT环境                                                    |
 
 ## KBZ Pay参数
 | 名称              | 是否必填 | 类型     | 示例      | 说明   |
@@ -32,6 +37,13 @@
 | kbzAppId        | M    | string | Sf***** | 应用ID |
 | kbzMerchantCode | M    | string | MII**** | 商户编码 |
 | kbzMerchantKey  | M    | string | MII**** | 商户私钥 |
+
+## Hi Pay参数
+| 名称              | 是否必填 | 类型     | 示例      | 说明   |
+|-----------------|------|--------|---------|------|
+| hiPayAppId      | M    | string | Sf***** | 应用ID |
+| hiPayPrivateKey | M    | string | MII**** | 商户私钥 |
+| hiPayPublicKey  | M    | string | MII**** | 应用公钥 |
 
 # 返回参数
 ## 通用参数
