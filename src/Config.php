@@ -24,6 +24,13 @@ namespace Yijin\AbroadPay;
  * @property string $hipayAppId 商户的应用id
  * @property string $hiPayPrivateKey 商户私钥
  * @property string $hiPayPublicKey 应用公钥
+ *
+ * IPay88参数
+ * @property string $iPay88MerchantKey 商户key
+ * @property string $iPay88MerchantCode 商户编码
+ * @property string $iPay88MerchantName 商户名称
+ * @property string $iPay88MerchantContact 商户手机号
+ * @property string $iPay88MerchantEmail 商户邮箱
  */
 class Config
 {

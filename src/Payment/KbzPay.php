@@ -2,6 +2,7 @@
 
 namespace Yijin\AbroadPay\Payment;
 
+use Exception;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use Yijin\AbroadPay\Config;
@@ -30,7 +31,7 @@ class KbzPay extends Base
     /**
      * @inheritDoc
      */
-    function barcodePay()
+    function barcodePay(): array
     {
         return $this->error('暂不支持', -1);
     }
@@ -38,7 +39,7 @@ class KbzPay extends Base
     /**
      * @inheritDoc
      */
-    function qrcodePay()
+    function qrcodePay(): array
     {
         $params = [
             "appid" => $this->config->kbzAppId,
@@ -53,7 +54,7 @@ class KbzPay extends Base
             $res = $this->execRequest($params, self::QRCODE_PAY_URL);
         } catch (GuzzleException $e) {
             return $this->error($e->getMessage(), $e->getCode());
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return $this->error($e->getMessage(), $e->getCode());
         }
         if ($this->isSuccess($res)) {
@@ -70,7 +71,7 @@ class KbzPay extends Base
     /**
      * @inheritDoc
      */
-    function webPay()
+    function webPay(): array
     {
         return $this->error('暂不支持', -1);
     }
@@ -78,7 +79,7 @@ class KbzPay extends Base
     /**
      * @inheritDoc
      */
-    function query()
+    function query(): array
     {
         $params = [
             "appid" => $this->config->kbzAppId,
@@ -89,7 +90,7 @@ class KbzPay extends Base
             $res = $this->execRequest($params, self::ORDER_QUERY_URL);
         } catch (GuzzleException $e) {
             return $this->error($e->getMessage(), $e->getCode());
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return $this->error($e->getMessage(), $e->getCode());
         }
         if ($this->isSuccess($res)) {
@@ -119,7 +120,7 @@ class KbzPay extends Base
     /**
      * @inheritDoc
      */
-    function refund()
+    function refund(): array
     {
         $params = [
             "appid" => $this->config->kbzAppId,
@@ -131,7 +132,7 @@ class KbzPay extends Base
             $res = $this->execRequest($params, self::REFUND_URL);
         } catch (GuzzleException $e) {
             return $this->error($e->getMessage(), $e->getCode());
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return $this->error($e->getMessage(), $e->getCode());
         }
         if ($this->isSuccess($res)) {
@@ -158,7 +159,7 @@ class KbzPay extends Base
     /**
      * @inheritDoc
      */
-    function refundQuery()
+    function refundQuery(): array
     {
         $params = [
             "appid" => $this->config->kbzAppId,
@@ -170,7 +171,7 @@ class KbzPay extends Base
             $res = $this->execRequest($params, self::REFUND_QUERY_URL);
         } catch (GuzzleException $e) {
             return $this->error($e->getMessage(), $e->getCode());
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return $this->error($e->getMessage(), $e->getCode());
         }
         if ($this->isSuccess($res)) {
@@ -194,7 +195,7 @@ class KbzPay extends Base
     /**
      * @inheritDoc
      */
-    function notify($data)
+    function notify($data): array
     {
         if (!$this->verifySign($data)) {
             return $this->error('验签失败', -1);
@@ -211,7 +212,7 @@ class KbzPay extends Base
     /**
      * @inheritDoc
      */
-    function notifySuccess()
+    function notifySuccess(): string
     {
         return 'success';
     }
@@ -229,7 +230,7 @@ class KbzPay extends Base
             if ($key === 'sign' || $key === 'sign_type' || $key === 'biz_content'|| $key === 'refund_info' || empty($val)) {
                 continue;
             }
-            $str[] = "{$key}={$val}";
+            $str[] = "$key=$val";
         }
         $str[] = "key={$this->config->kbzMerchantKey}";
         return strtoupper(hash('sha256', implode('&', $str)));
@@ -250,7 +251,7 @@ class KbzPay extends Base
         $commonParams = [
             "timestamp" => time(),
             "notify_url" => $this->config->notifyUrl,
-            "method" => "kbz.payment.{$url}",
+            "method" => "kbz.payment.$url",
             "nonce_str" => md5(time()),
             "sign_type" => "SHA256",
             "version" => "1.0",

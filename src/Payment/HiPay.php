@@ -2,6 +2,7 @@
 
 namespace Yijin\AbroadPay\Payment;
 
+use Exception;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use Yijin\AbroadPay\Config;
@@ -39,15 +40,11 @@ class HiPay extends Base
     ];
 
     use Response;
-    public function __construct(Config $config)
-    {
-        parent::__construct($config);
-    }
 
     /**
      * @inheritDoc
      */
-    function barcodePay()
+    function barcodePay(): array
     {
         $params = [
             'notify_url' => $this->config->notifyUrl,
@@ -68,7 +65,7 @@ class HiPay extends Base
             $res = $this->execRequest($params, self::ORDER_PAY_URL);
         } catch (GuzzleException $e) {
             return $this->error($e->getMessage(), $e->getCode());
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return $this->error($e->getMessage(), $e->getCode());
         }
 
@@ -88,7 +85,7 @@ class HiPay extends Base
     /**
      * @inheritDoc
      */
-    function qrcodePay()
+    function qrcodePay(): array
     {
         $params = [
             'notify_url' => $this->config->notifyUrl,
@@ -106,7 +103,7 @@ class HiPay extends Base
             $res = $this->execRequest($params, self::ORDER_PAY_URL);
         } catch (GuzzleException $e) {
             return $this->error($e->getMessage(), $e->getCode());
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return $this->error($e->getMessage(), $e->getCode());
         }
 
@@ -122,7 +119,7 @@ class HiPay extends Base
     /**
      * @inheritDoc
      */
-    function webPay()
+    function webPay(): array
     {
         $params = [
             'notify_url' => $this->config->notifyUrl,
@@ -140,7 +137,7 @@ class HiPay extends Base
             $res = $this->execRequest($params, self::ORDER_PAY_URL);
         } catch (GuzzleException $e) {
             return $this->error($e->getMessage(), $e->getCode());
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return $this->error($e->getMessage(), $e->getCode());
         }
 
@@ -156,7 +153,7 @@ class HiPay extends Base
     /**
      * @inheritDoc
      */
-    function query()
+    function query(): array
     {
         $params = [
             'merch_order_id' => $this->config->tradeNo,
@@ -165,7 +162,7 @@ class HiPay extends Base
             $res = $this->execRequest($params, self::ORDER_QUERY_URL);
         } catch (GuzzleException $e) {
             return $this->error($e->getMessage(), $e->getCode());
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return $this->error($e->getMessage(), $e->getCode());
         }
 
@@ -185,7 +182,7 @@ class HiPay extends Base
     /**
      * @inheritDoc
      */
-    function refund()
+    function refund(): array
     {
         $params = [
             'merch_order_id' => $this->config->tradeNo,
@@ -197,7 +194,7 @@ class HiPay extends Base
             $res = $this->execRequest($params, self::REFUND_URL);
         } catch (GuzzleException $e) {
             return $this->error($e->getMessage(), $e->getCode());
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return $this->error($e->getMessage(), $e->getCode());
         }
 
@@ -219,7 +216,7 @@ class HiPay extends Base
     /**
      * @inheritDoc
      */
-    function refundQuery()
+    function refundQuery(): array
     {
         $params = [
             'merch_order_id' => $this->config->tradeNo,
@@ -229,7 +226,7 @@ class HiPay extends Base
             $res = $this->execRequest($params, self::REFUND_QUERY_URL);
         } catch (GuzzleException $e) {
             return $this->error($e->getMessage(), $e->getCode());
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return $this->error($e->getMessage(), $e->getCode());
         }
 
@@ -251,7 +248,7 @@ class HiPay extends Base
     /**
      * @inheritDoc
      */
-    function notify($data)
+    function notify($data): array
     {
         list($headers, $body) = $data;
         $sign = $headers['x-ft-sign'] ?? '';
@@ -278,7 +275,7 @@ class HiPay extends Base
     /**
      * @inheritDoc
      */
-    function notifySuccess()
+    function notifySuccess(): string
     {
         return 'success';
     }
@@ -308,9 +305,7 @@ class HiPay extends Base
             wordwrap($this->config->hiPayPublicKey, 64, "\n", true) .
             "\n-----END PUBLIC KEY-----";
         $key = openssl_get_publickey($publicKey);
-        $ok = openssl_verify($str, base64_decode($sign), $key,'sha256');
-        openssl_free_key($key);
-        return $ok;
+        return openssl_verify($str, base64_decode($sign), $key,'sha256');
     }
 
     /**
