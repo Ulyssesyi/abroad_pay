@@ -48,13 +48,13 @@ class Config
     const REFUNDING = 0;
     const REFUND_FAIL = -1;
 
-    protected $_config = [];
+    protected array $_config = [];
 
     /**
      * 更多的参数想要传递给支付渠道的，可以放入这个数组，会在请求时合并到请求参数内
      * @var array
      */
-    public $optional = [];
+    public array $optional = [];
 
     public function __set($name, $value)
     {

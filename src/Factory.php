@@ -15,15 +15,11 @@ class Factory
      * @throws \Exception
      */
     function getAdapter(Config $config): Base {
-        switch ($config->channel) {
-            case Config::PAY_BY_KBZ:
-                return new KbzPay($config);
-            case Config::PAY_BY_HIPAY:
-                return new HiPay($config);
-            case Config::PAY_BY_IPAY88:
-                return new IPay88($config);
-            default:
-                throw new \Exception('暂时未支持的支付通道');
-        }
+        return match ($config->channel) {
+            Config::PAY_BY_KBZ => new KbzPay($config),
+            Config::PAY_BY_HIPAY => new HiPay($config),
+            Config::PAY_BY_IPAY88 => new IPay88($config),
+            default => throw new \Exception('暂时未支持的支付通道'),
+        };
     }
 }
