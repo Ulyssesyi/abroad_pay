@@ -35,6 +35,13 @@ namespace Yijin\AbroadPay;
  * GKash参数
  * @property string $gKashCID 商户的应用id
  * @property string $gKashSignKey 商户密钥
+ *
+ * Stripe参数
+ * @property string $stripePublicKey 应用公钥
+ * @property string $stripePrivateKey 应用私钥
+ * @property string $stripeEndKey 平台公钥
+ * @property string $stripeAccount 商户账号
+ *
  */
 class Config
 {
