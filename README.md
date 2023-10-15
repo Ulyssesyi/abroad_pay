@@ -4,8 +4,8 @@
 | 渠道         | 渠道编号 | 进度                              |
 |------------|------|---------------------------------|
 | KBZ Pay    | 1    | （<font color=yellow>已废弃</font>） |
-| Hi Pay     | 2    | （<font color=red>待测试</font>）    |
-| IPay88 Pay | 3    | （<font color=red>开发中</font>）    |
+| Hi Pay     | 2    | （<font color=green>待测试</font>）  |
+| IPay88 Pay | 3    | （<font color=green>待测试</font>）  |
 | Gkash Pay  | 4    | （<font color=red>开发中</font>）    |
 | Stripe Pay | 5    | （<font color=red>开发中</font>）    |
 
@@ -53,6 +53,12 @@
 | iPay88MerchantName    | M    | string | Sf***** | 商户名称  |
 | iPay88MerchantContact | M    | string | Sf***** | 商户手机号 |
 | iPay88MerchantEmail   | M    | string | Sf***** | 商户邮箱  |
+
+## Gkash参数
+| 名称               | 是否必填 | 类型     | 示例      | 说明    |
+|------------------|------|--------|---------|-------|
+| gKashMerchantKey | M    | string | Sf***** | 商户key |
+| gKashMerchantCID | M    | string | Sf***** | 商户id  |
 
 # 返回参数
 ## 通用参数

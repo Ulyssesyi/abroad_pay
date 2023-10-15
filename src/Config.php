@@ -31,6 +31,10 @@ namespace Yijin\AbroadPay;
  * @property string $iPay88MerchantName 商户名称
  * @property string $iPay88MerchantContact 商户手机号
  * @property string $iPay88MerchantEmail 商户邮箱
+ *
+ * GKash参数
+ * @property string $gKashCID 商户的应用id
+ * @property string $gKashSignKey 商户密钥
  */
 class Config
 {
