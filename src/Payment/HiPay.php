@@ -44,6 +44,14 @@ class HiPay extends Base
     /**
      * @inheritDoc
      */
+    function terminalPay(): array
+    {
+        return $this->error('暂不支持', -1);
+    }
+
+    /**
+     * @inheritDoc
+     */
     function barcodePay(): array
     {
         $params = [
@@ -316,7 +324,7 @@ class HiPay extends Base
         $requestId = uniqid();
         $content = [
             'method' => self::API_METHOD_MAP[$url],
-            "nonce_str" => md5($time),
+            "nonce_str" => md5((string)$time),
             'version' => '1.0',
             "biz_content" => array_merge($params, $this->config->optional),
         ];

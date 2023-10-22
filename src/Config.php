@@ -41,15 +41,17 @@ namespace Yijin\AbroadPay;
  * @property string $stripePrivateKey 应用私钥
  * @property string $stripeEndKey 平台公钥
  * @property string $stripeAccount 商户账号
+ * @property string $paymentMethod 支付方式id，网页支付需要
+ * @property string $paymentMethodType 支付方式，网页支付需要
+ * @property string $paymentIntentId 支付id，刷卡支付需要
  *
  */
 class Config
 {
-    const PAY_BY_KBZ = 1;
-    const PAY_BY_HIPAY = 2;
-    const PAY_BY_IPAY88 = 3;
-    const PAY_BY_GKASH = 4;
-    const PAY_BY_STRIPE = 5;
+    const PAY_BY_HIPAY = 1;
+    const PAY_BY_IPAY88 = 2;
+    const PAY_BY_GKASH = 3;
+    const PAY_BY_STRIPE = 4;
 
     const PAY_SUCCESS = 1;
     const PAYING = 0;

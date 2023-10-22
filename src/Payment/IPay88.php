@@ -14,6 +14,14 @@ class IPay88 extends Base
     use Response;
     const DOMAIN = 'https://payment.ipay88.com.my';
     private TransactionType $transType;
+
+    /**
+     * @inheritDoc
+     */
+    function terminalPay(): array
+    {
+        return $this->error('暂不支持', -1);
+    }
     /**
      * @inheritDoc
      */

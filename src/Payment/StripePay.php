@@ -16,6 +16,28 @@ class StripePay extends Base
     /**
      * @inheritDoc
      */
+    function terminalPay(): array
+    {
+        $stripe = new StripeClient($this->config->stripePrivateKey);
+
+        try {
+            $payment_intent_id = $this->config->paymentIntentId ?? '';
+            $intent = $stripe->paymentIntents->capture($payment_intent_id);
+            $status = 0;
+            if ($intent->status === 'succeeded') {
+                $status = 1;
+            } else if ($intent->status === 'requires_payment_method') {
+                $status = -1;
+            }
+            return $this->success(['trade_status' => $status]);
+        } catch (ApiErrorException $e) {
+            return $this->error($e->getMessage(), -1);
+        }
+    }
+
+    /**
+     * @inheritDoc
+     */
     function barcodePay(): array
     {
         return $this->error('暂不支持条码支付', -1);
@@ -36,8 +58,8 @@ class StripePay extends Base
     {
         $stripe = new StripeClient($this->config->stripePrivateKey);
         try {
-            $payment_method = $this->config->optional['payment_method'] ?? null;
-            $payment_method_type = $this->config->optional['payment_method_type'] ?? 'card';
+            $payment_method = $this->config->paymentMethod ?? null;
+            $payment_method_type = $this->config->paymentMethodType ?? 'card';
             $paymentIntent = $stripe->paymentIntents->create([
                 'amount' => $this->config->totalAmount * 100,
                 'currency' => 'sgd',

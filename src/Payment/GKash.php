@@ -14,6 +14,14 @@ class GKash extends Base
     /**
      * @inheritDoc
      */
+    function terminalPay(): array
+    {
+        return $this->error('暂不支持', -1);
+    }
+
+    /**
+     * @inheritDoc
+     */
     function barcodePay(): array
     {
         return $this->error('暂不支持', -1);

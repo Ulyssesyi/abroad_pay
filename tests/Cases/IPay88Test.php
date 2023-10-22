@@ -1,12 +1,11 @@
 <?php
 declare(strict_types=1);
-namespace Cases;
 
 use Yijin\AbroadPay\Config;
 use PHPUnit\Framework\TestCase;
 use Yijin\AbroadPay\Factory;
 
-class KbzPayTest extends TestCase
+class IPay88Test extends TestCase
 {
     private $tradeNo;
     protected function setUp(): void
@@ -17,7 +16,7 @@ class KbzPayTest extends TestCase
     public function testQrcodePaySuccess()
     {
         $config = new Config();
-        $config->channel = Config::PAY_BY_KBZ;
+        $config->channel = Config::PAY_BY_IPAY88;
         $config->tradeNo = $this->tradeNo;
         $config->totalAmount = 0.01;
         $config->subject = '起飞';
@@ -31,22 +30,5 @@ class KbzPayTest extends TestCase
         $res = $payModel->qrcodePay();
         $this->assertTrue($res['result'], 'B扫C失败' . json_encode($res,  JSON_UNESCAPED_UNICODE));
         $this->assertArrayHasKey('payUrl', $res['data'], 'C扫B失败' . json_encode($res,  JSON_UNESCAPED_UNICODE));
-    }
-
-    public function testQrcodePayFailed()
-    {
-        $config = new Config();
-        $config->channel = Config::PAY_BY_KBZ;
-        $config->tradeNo = $this->tradeNo;
-        $config->totalAmount = 0.01;
-        $config->subject = '起飞';
-
-        $config->kbzAppId = getenv('KBZ_APPID');
-        $config->kbzMerchantCode = getenv('KBZ_MCH_ID');
-        $config->kbzMerchantKey = getenv('KBZ_MCH_KEY');
-
-        $payModel = (new Factory())->getAdapter($config);
-        $res = $payModel->qrcodePay();
-        $this->assertFalse($res['result'], 'B扫C失败未如期实现' . json_encode($res,  JSON_UNESCAPED_UNICODE));
     }
 }

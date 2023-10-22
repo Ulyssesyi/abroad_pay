@@ -15,6 +15,12 @@ abstract class Base
     }
 
     /**
+     * 刷卡支付
+     * 返回的data中必须包含key-trade_status：当前交易状态，-1-支付失败, 0-支付进行中, 1-支付完成
+     */
+    abstract function terminalPay(): array;
+
+    /**
      * 条码支付（B扫C）
      * 返回的data中必须包含key-trade_status：当前交易状态，-1-支付失败, 0-支付进行中, 1-支付完成
      */

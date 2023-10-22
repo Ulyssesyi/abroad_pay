@@ -1,21 +1,24 @@
 # 介绍
+
 这个项目是适配公司多个不同海外支付渠道的支付组件，目前支持的支付渠道如下
 
-| 渠道         | 渠道编号 | 进度                              |
-|------------|------|---------------------------------|
-| KBZ Pay    | 1    | （<font color=yellow>已废弃</font>） |
-| Hi Pay     | 2    | （<font color=green>待测试</font>）  |
-| IPay88 Pay | 3    | （<font color=green>待测试</font>）  |
-| Gkash Pay  | 4    | （<font color=green>待测试</font>）  |
-| Stripe Pay | 5    | （<font color=red>开发中</font>）    |
+| 渠道         | 渠道编号 | 进度                             |
+|------------|------|--------------------------------|
+| Hi Pay     | 1    | （<font color=green>待测试</font>） |
+| IPay88 Pay | 2    | （<font color=green>待测试</font>） |
+| Gkash Pay  | 3    | （<font color=green>待测试</font>） |
+| Stripe Pay | 4    | （<font color=red>开发中</font>）   |
 
 # 更多
+
 可以通过继承Base类后实现更多的支付渠道
 
 # 示例
+
 参看tests文件夹下测试用例的实现
 
 # 请求参数
+
 ## 通用参数
 
 | 名称            | 是否必填 | 类型     | 示例                             | 说明                                                            |
@@ -32,6 +35,7 @@
 | isSandbox     | C    | bool   | false                          | 是否使用了UAT环境                                                    |
 
 ## KBZ Pay参数
+
 | 名称              | 是否必填 | 类型     | 示例      | 说明   |
 |-----------------|------|--------|---------|------|
 | kbzAppId        | M    | string | Sf***** | 应用ID |
@@ -39,6 +43,7 @@
 | kbzMerchantKey  | M    | string | MII**** | 商户私钥 |
 
 ## Hi Pay参数
+
 | 名称              | 是否必填 | 类型     | 示例      | 说明   |
 |-----------------|------|--------|---------|------|
 | hiPayAppId      | M    | string | Sf***** | 应用ID |
@@ -46,6 +51,7 @@
 | hiPayPublicKey  | M    | string | MII**** | 应用公钥 |
 
 ## IPay88参数
+
 | 名称                    | 是否必填 | 类型     | 示例      | 说明    |
 |-----------------------|------|--------|---------|-------|
 | iPay88MerchantKey     | M    | string | Sf***** | 商户key |
@@ -55,20 +61,26 @@
 | iPay88MerchantEmail   | M    | string | Sf***** | 商户邮箱  |
 
 ## Gkash参数
+
 | 名称               | 是否必填 | 类型     | 示例      | 说明    |
 |------------------|------|--------|---------|-------|
 | gKashMerchantKey | M    | string | Sf***** | 商户key |
 | gKashMerchantCID | M    | string | Sf***** | 商户id  |
 
 ## Stripe参数
-| 名称               | 是否必填 | 类型     | 示例      | 说明   |
-|------------------|------|--------|---------|------|
-| stripePublicKey  | M    | string | Sf***** | 应用公钥 |
-| stripePrivateKey | M    | string | Sf***** | 应用私钥 |
-| stripeEndKey     | M    | string | Sf***** | 平台公钥 |
-| stripeAccount    | M    | string | Sf***** | 商户账号 |
+
+| 名称                | 是否必填 | 类型     | 示例      | 说明             |
+|-------------------|------|--------|---------|----------------|
+| stripePublicKey   | M    | string | Sf***** | 应用公钥           |
+| stripePrivateKey  | M    | string | Sf***** | 应用私钥           |
+| stripeEndKey      | M    | string | Sf***** | 平台公钥           |
+| stripeAccount     | M    | string | Sf***** | 商户账号           |
+| paymentMethod     | O    | string | xxx     | 支付方式id, 网页支付需要 |
+| paymentMethodType | O    | string | card    | 支付方式, 网页支付需要   |
+| paymentIntentId   | O    | string | xxx     | 支付id，刷卡支付需要    |
 
 # 返回参数
+
 ## 通用参数
 
 | 名称       | 是否必填 | 类型     | 示例             | 说明                                  |
@@ -79,4 +91,5 @@
 | data     | C    | mixed  | https://xxx/xx | 请求成功时，一些额外信息返回，各接口的返回必需参数参看Base类的注释 |
 
 # 名词解释
+
 M-必填，C-可以不填写，O-部分场景下必填
